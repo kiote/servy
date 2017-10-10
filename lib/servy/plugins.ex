@@ -1,18 +1,20 @@
 defmodule Servy.Plugins do
+	alias Servy.Conv
+
 	def track(%{status: 404, path: path} = conv) do
       IO.puts "Warning: #{path} not found"
       conv
     end
 
-    def track(conv), do: conv
+    def track(%Conv{} = conv), do: conv
 
-    def log(conv), do: IO.inspect conv
+    def log(%Conv{} = conv), do: IO.inspect conv
 
-    def rewrite_path(%{path: "/wildlife"} = conv) do
+    def rewrite_path(%Conv{path: "/wildlife"} = conv) do
       %{ conv | path: "/wildthings" }
     end
 
-    def rewrite_path(conv), do: conv
+    def rewrite_path(%Conv{} = conv), do: conv
 
     def handle_file({:ok, content}, conv) do
       %{conv | status: 200, resp_body: content}
