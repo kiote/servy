@@ -4,7 +4,8 @@ defmodule Servy.Parser do
         |> String.split("\n")
         |> List.first
         |> String.split(" ")
-      %{method: method,
+      %Servy.Conv{
+		method: method,
         path: path,
         resp_body: "",
         status: nil}
