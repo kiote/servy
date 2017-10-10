@@ -2,28 +2,30 @@ defmodule Servy.Handler do
 	import Servy.Plugins
 	import Servy.Parser
 
+	alias Servy.Conv
+
     @pages_path Path.expand("../../pages", __DIR__)
 
-	def route(%{method: "GET", path: "/wildthings"} = conv) do
+	def route(%Conv{method: "GET", path: "/wildthings"} = conv) do
 	  %{conv | status: 200, resp_body: "Bears, Lions, Tigers"}
 	end
 
-	def route(%{method: "GET", path: "/bears"} = conv) do
+	def route(%Conv{method: "GET", path: "/bears"} = conv) do
       %{conv | status: 200, resp_body: "teddy, smokey, paddington"}
     end
 
-    def route(%{method: "GET", path: "/bears/" <> id} = conv) do
+    def route(%Conv{method: "GET", path: "/bears/" <> id} = conv) do
       %{conv | status: 200, resp_body: "Bear #{id}"}
     end
 
-	def route(%{method: "GET", path: "/about"} = conv) do
+	def route(%Conv{method: "GET", path: "/about"} = conv) do
       @pages_path
       |> Path.join('about.html')
       |> File.read
       |> handle_file(conv)
     end
 
-	def route(%{path: path} = conv) do
+	def route(%Conv{path: path} = conv) do
 	  %{conv | status: 404, resp_body: "no #{path} here!"}
 	end
 
