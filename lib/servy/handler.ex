@@ -18,6 +18,11 @@ defmodule Servy.Handler do
       %{conv | status: 200, resp_body: "Bear #{id}"}
     end
 
+	def route(%Conv{method: "POST", path: "/bears"} = conv) do
+		%{ conv | status: 201,
+			resp_body: "Created a #{conv.params["type"]} bear named #{conv.params["name"]}" }
+	end
+
 	def route(%Conv{method: "GET", path: "/about"} = conv) do
       @pages_path
       |> Path.join('about.html')
@@ -50,54 +55,69 @@ Accept: */*
 
 response = Servy.Handler.handle(request)
 IO.puts response
-
+#
+#
+#
+# request = """
+# GET /bears HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
+#
+# """
+#
+# response = Servy.Handler.handle(request)
+# IO.puts response
+#
+#
+# request = """
+# GET /bigfoot HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
+#
+# """
+#
+# response = Servy.Handler.handle(request)
+# IO.puts response
+#
+#
+# request = """
+# GET /bears/1 HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
+#
+# """
+#
+# response = Servy.Handler.handle(request)
+# IO.puts response
+#
+#
+#
+#
+#
+# request = """
+# GET /about HTTP/1.1
+# Host: example.com
+# User-Agent: ExampleBrowser/1.0
+# Accept: */*
+#
+# """
+#
+# response = Servy.Handler.handle(request)
+# IO.puts response
 
 
 request = """
-GET /bears HTTP/1.1
+POST /bears HTTP/1.1
 Host: example.com
 User-Agent: ExampleBrowser/1.0
 Accept: */*
+Content-Type: application/x-www-form-unicoded
+Content-Length: 21
 
-"""
-
-response = Servy.Handler.handle(request)
-IO.puts response
-
-
-request = """
-GET /bigfoot HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-
-response = Servy.Handler.handle(request)
-IO.puts response
-
-
-request = """
-GET /bears/1 HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
-
-"""
-
-response = Servy.Handler.handle(request)
-IO.puts response
-
-
-
-
-
-request = """
-GET /about HTTP/1.1
-Host: example.com
-User-Agent: ExampleBrowser/1.0
-Accept: */*
-
+name=Baloo&type=Browny
 """
 
 response = Servy.Handler.handle(request)
