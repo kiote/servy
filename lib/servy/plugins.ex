@@ -36,7 +36,7 @@ defmodule Servy.Plugins do
     def format_response(conv) do
         """
         HTTP/1.1 #{Conv.full_status(conv)}\r
-        Content-Type: text/html\r
+        Content-Type: #{conv.content_type}\r
         Content-Length: #{String.length(conv.resp_body)}\r
 		\r
         #{conv.resp_body}

@@ -41,6 +41,25 @@ defmodule HandlerTest do
 		<ul><li>Teddy - Brown</li><li>Smokey - Black</li><li>Paddington - Brown</li></ul>
 		"""
 	end
+
+	test "GET /api/bears" do
+		request = """
+		GET /api/bears HTTP/1.1\r
+		Host: example.com\r
+		User-Agent: ExampleBrowser/1.0\r
+		Accept: */*\r
+		\r
+		"""
+
+		response = handle(request)
+
+		assert response == """
+		HTTP/1.1 200 OK\r
+		Content-Type: application/json\r
+		Content-Length: 183\r\n\r
+		[{\"type\":\"Brown\",\"name\":\"Teddy\",\"id\":1,\"hibernating\":true},{\"type\":\"Black\",\"name\":\"Smokey\",\"id\":2,\"hibernating\":false},{\"type\":\"Brown\",\"name\":\"Paddington\",\"id\":3,\"hibernating\":false}]
+		"""
+	end
 end
 
 # request = """
