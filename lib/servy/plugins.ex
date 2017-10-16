@@ -8,7 +8,12 @@ defmodule Servy.Plugins do
 
     def track(%Conv{} = conv), do: conv
 
-    def log(%Conv{} = conv), do: IO.inspect conv
+    def log(%Conv{} = conv) do
+		if Mix.env == :dev do
+			IO.inspect conv
+		end
+		conv
+	end
 
     def rewrite_path(%Conv{path: "/wildlife"} = conv) do
       %{ conv | path: "/wildthings" }
@@ -30,10 +35,10 @@ defmodule Servy.Plugins do
 
     def format_response(conv) do
         """
-        HTTP/1.1 #{Conv.full_status(conv)}
-        Content-Type: text/html
-        Content-Length: #{String.length(conv.resp_body)}
-
+        HTTP/1.1 #{Conv.full_status(conv)}\r
+        Content-Type: text/html\r
+        Content-Length: #{String.length(conv.resp_body)}\r
+		\r
         #{conv.resp_body}
         """
     end
